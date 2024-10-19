@@ -9,7 +9,7 @@ const Home = ({params}) => {
   return (
     <Provider store={store}>
     <main className="h-full w-full my-20">
-     hello{params.slug}
+     
     <PostPage slug={params.slug} />
   </main>
   </Provider>

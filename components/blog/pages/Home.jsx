@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PostCard from '../components/PostCard';
 import LeftSidebar from '../components/LeftSidebar';
 import DashSidebar2 from '../components/DashSidebar2';
@@ -8,7 +9,7 @@ import Link from 'next/link'; // Import Link from Next.js
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-
+  const { currentUser, loading } = useSelector((state) => state.user);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -36,7 +37,7 @@ export default function Home() {
       {/* Hide the sidebar on small screens and display it on medium screens */}
       <div className="hidden md:w-56 md:block my-20">
         <div className="sticky top-0">
-          <LeftSidebar/>
+          <LeftSidebar currentUser={currentUser}/>
         </div>
       </div>
 
