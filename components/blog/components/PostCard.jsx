@@ -74,7 +74,7 @@ export default function PostCard({ post }) {
       <div className='p-6'>
         <p className='text-2xl font-semibold mb-2'>{post.title}</p>
         <span className='italic text-sm text-gray-600'>{post.category}</span>
-        <Link href={`/post/${post.slug}`}>
+        <Link href={`/blogpost/${post.slug}`}>
           <img
             src={post.image}
             alt='post cover'

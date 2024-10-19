@@ -32,7 +32,7 @@ export default function DashSidebar2() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/post/getPosts');
+      const res = await fetch('http://localhost:8000/api/post/getPosts');
       const data = await res.json();
       setPosts(data.posts);
     };
@@ -40,9 +40,10 @@ export default function DashSidebar2() {
   }, []);
 
   return (
-    <Sidebar className="w-full md:w-72 bg-gray-100 p-4 rounded-lg">
-      <Sidebar.Items>
-        <Sidebar.ItemGroup className="flex flex-col gap-4">
+    <Sidebar className="w-full md:w-72 bg-white p-4 rounded-lg ">
+      <div className="bg-white">
+      <Sidebar.Items className='bg-white'>
+        <Sidebar.ItemGroup className="flex flex-col gap-">
 
           {/* Ads Section */}
           <div className="mb-6">
@@ -93,6 +94,7 @@ export default function DashSidebar2() {
 
         </Sidebar.ItemGroup>
       </Sidebar.Items>
+      </div>
     </Sidebar>
   );
 }

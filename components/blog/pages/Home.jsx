@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import LeftSidebar from '../components/LeftSidebar';
-import DashSidebar1 from '../components/DashSidebar1';
 import DashSidebar2 from '../components/DashSidebar2';
 import Head from 'next/head'; // Use Head from Next.js
 import Link from 'next/link'; // Import Link from Next.js
@@ -58,7 +57,7 @@ export default function Home() {
                 href={'/search'} // Use Next.js Link
                 className='text-lg text-teal-500 hover:underline text-center'
               >
-                View all posts
+                View all Blogs
               </Link>
             </div>
           )}
@@ -66,9 +65,9 @@ export default function Home() {
       </div>
 
       {/* Right sidebar for ads/news */}
-      {/* <div className="md:w-72">
+      <div className="md:w-72 bg-white">
         <DashSidebar2 />
-      </div> */}
+      </div>
     </div>
   );
 }

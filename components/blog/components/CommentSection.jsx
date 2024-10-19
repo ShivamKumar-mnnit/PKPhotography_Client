@@ -1,7 +1,8 @@
 import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link"; // Use Next.js Link
+import { useRouter } from "next/router"; // Use Next.js router for navigation
 import Comment from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -12,7 +13,7 @@ export default function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
-  const navigate = useNavigate();
+  const router = useRouter(); // Replacing useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ export default function CommentSection({ postId }) {
       return;
     }
     try {
-      const res = await fetch("/api/comment/create", {
+      const res = await fetch("http://localhost:8000/api/comment/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +46,7 @@ export default function CommentSection({ postId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const res = await fetch(`http://localhost:8000/api/comment/getPostComments/${postId}`);
         if (res.ok) {
           const data = await res.json();
           setComments(data);
@@ -60,13 +61,12 @@ export default function CommentSection({ postId }) {
   const handleLike = async (commentId) => {
     try {
       if (!currentUser) {
-        navigate("/sign-in");
+        router.push("/sign-in"); // Replace navigate with router.push
         return;
       }
-      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+      const res = await fetch(`http://localhost:8000/api/comment/likeComment/${commentId}`, {
         method: "PUT",
       });
-      console.log(res);
       if (res.ok) {
         const data = await res.json();
         setComments(
@@ -98,14 +98,13 @@ export default function CommentSection({ postId }) {
     setShowModal(false);
     try {
       if (!currentUser) {
-        navigate("/sign-in");
+        router.push("/sign-in"); // Replace navigate with router.push
         return;
       }
-      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+      const res = await fetch(`http://localhost:8000/api/comment/deleteComment/${commentId}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        const data = await res.json();
         setComments(comments.filter((comment) => comment._id !== commentId));
       }
     } catch (error) {
@@ -123,18 +122,17 @@ export default function CommentSection({ postId }) {
             src={currentUser.profilePicture}
             alt=""
           />
-          <Link
-            to={"/dashboard?tab=profile"}
-            className="text-xs text-cyan-600 hover:underline"
-          >
-            @{currentUser.username}
+          <Link href="/dashboard?tab=profile" passHref>
+            <a className="text-xs text-cyan-600 hover:underline">
+              @{currentUser.username}
+            </a>
           </Link>
         </div>
       ) : (
         <div className="text-sm text-teal-500 my-5 flex gap-1">
           You must be signed in to comment.
-          <Link className="text-blue-500 hover:underline" to={"/sign-in"}>
-            Sign In
+          <Link href="/sign-in">
+            <a className="text-blue-500 hover:underline">Sign In</a>
           </Link>
         </div>
       )}
