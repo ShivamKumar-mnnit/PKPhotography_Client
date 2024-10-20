@@ -40,10 +40,8 @@ export default function DashSidebar2() {
   }, []);
 
   return (
-    <Sidebar className="w-full md:w-72 bg-white p-4 rounded-lg ">
-      <div className="bg-white">
-      <Sidebar.Items className='bg-white'>
-        <Sidebar.ItemGroup className="flex flex-col gap-">
+  <div className='w-full md:w-72 bg-white p-4 rounded-lg'>
+        {/* <Sidebar.ItemGroup className="flex flex-col gap-2 bg-white"> */}
 
           {/* Ads Section */}
           <div className="mb-6">
@@ -63,7 +61,7 @@ export default function DashSidebar2() {
           <div className='max-w-6xl mx-auto p-3 py-7'>
             {posts && posts.length > 0 && (
               <div className='flex flex-col gap-6 items-center'>
-                <h2 className='text-2xl font-semibold text-center'>Recent Posts</h2>
+                <h2 className='text-2xl font-semibold text-center'>Recent Blogs</h2>
                 <div className='max-w-6xl mx-auto p-3 py-7 flex flex-col gap-8'>
                   {/* Show only 3 recent posts */}
                   {posts.slice(0, 3).map((post) => (
@@ -74,7 +72,7 @@ export default function DashSidebar2() {
                   href={'/search'} // Use Next.js Link for navigation
                   className='text-lg text-teal-500 hover:underline text-center'
                 >
-                  View all posts
+                  View all Blogs
                 </Link>
               </div>
             )}
@@ -91,10 +89,8 @@ export default function DashSidebar2() {
               ))}
             </div>
           </div>
+          </div>
 
-        </Sidebar.ItemGroup>
-      </Sidebar.Items>
-      </div>
-    </Sidebar>
+  
   );
 }
