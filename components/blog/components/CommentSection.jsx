@@ -2,7 +2,7 @@ import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link"; // Use Next.js Link
-import { useRouter } from "next/router"; // Use Next.js router for navigation
+import { useRouter } from "next/navigation"; // Use Next.js router for navigation
 import Comment from "./Comment";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -14,12 +14,17 @@ export default function CommentSection({ postId }) {
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const router = useRouter(); // Replacing useNavigate
+ 
 
+  console.log(postId);
+  console.log(currentUser._id);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
       return;
     }
+    console.log("Submitting comment:", { content: comment, postId, userId: currentUser?._id }); // Debugging line
+    
     try {
       const res = await fetch("http://localhost:8000/api/comment/create", {
         method: "POST",
@@ -123,16 +128,16 @@ export default function CommentSection({ postId }) {
             alt=""
           />
           <Link href="/dashboard?tab=profile" passHref>
-            <a className="text-xs text-cyan-600 hover:underline">
+            <div className="text-xs text-cyan-600 hover:underline">
               @{currentUser.username}
-            </a>
+            </div>
           </Link>
         </div>
       ) : (
         <div className="text-sm text-teal-500 my-5 flex gap-1">
           You must be signed in to comment.
           <Link href="/sign-in">
-            <a className="text-blue-500 hover:underline">Sign In</a>
+            <div className="text-blue-500 hover:underline">Sign In</div>
           </Link>
         </div>
       )}
@@ -152,8 +157,10 @@ export default function CommentSection({ postId }) {
             <p className="text-gray-500 text-xs">
               {200 - comment.length} characters remaining
             </p>
-            <Button outline gradientDuoTone="purpleToBlue" type="submit">
+            <Button outline gradientDuoTone="purpleToBlue" type="submit" >
+              <div className="text-black">
               Submit
+              </div>
             </Button>
           </div>
           {commentError && (

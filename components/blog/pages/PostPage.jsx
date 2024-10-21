@@ -2,13 +2,18 @@ import { Button, Spinner } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link'; // Import Link from next/link
 import CommentSection from '../components/CommentSection';
+import LeftSidebar from '../components/LeftSidebar';
+import { useSelector } from 'react-redux';
+import PostCard1 from '../components/PostCard1';
+
 
 export default function PostPage({ slug }) {
+  const { currentUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState(null);
-  console.log(slug);
+  console.log(currentUser);
 
   useEffect(() => {
     if (!slug) return; // Exit early if slug is not available
@@ -59,6 +64,7 @@ export default function PostPage({ slug }) {
 
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
+      <LeftSidebar currentUser={currentUser} />
       <h1 className='text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>
         {post && post.title}
       </h1>
@@ -90,11 +96,14 @@ export default function PostPage({ slug }) {
         className='p-3 max-w-2xl mx-auto w-full post-content'
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
-      {/* <CommentSection postId={post._id} /> */}
+      <CommentSection postId={post._id} />
 
       <div className='flex flex-col justify-center items-center mb-5'>
         <h1 className='text-xl mt-5'>Recent articles</h1>
-        {/* Recent posts rendering if needed */}
+        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard1 key={post._id} post={post} />)}
+        </div>
       </div>
     </main>
   );
