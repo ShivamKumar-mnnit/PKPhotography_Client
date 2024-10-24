@@ -3,6 +3,8 @@ import Hero from "@/components/main/Hero";
 import Projects from "@/components/main/Projects";
 import Skills from "@/components/main/Skills";
 import Image from "next/image";
+import Landing from "@/components/client/Landing";
+import UserCard from "@/components/client/UserCard";
 
 export default function Home() {
   return (
