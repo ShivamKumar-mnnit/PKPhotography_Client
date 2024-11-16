@@ -12,7 +12,7 @@ import Social from './Social';
 export default function FooterCom() {
   return (
     <>
-      <Social />
+      {/* <Social /> */}
       <footer className="bg-white py-10 border-t border-gray-200">
         <div className="container mx-auto px-6 max-w-7xl overflow-hidden">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-8">

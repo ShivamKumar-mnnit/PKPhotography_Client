@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import AdminMain from './AdminMain'; // Import the form component
+import AdminMain from './AdminMain'; // Form component
+import ClientAdmin from './ClientAdmin'; // Client image component
 
 const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState('uploadForm'); // State to track active component
 
+  // Render the selected component based on activeComponent state
   const renderComponent = () => {
     switch (activeComponent) {
       case 'uploadForm':
         return <AdminMain />;
+      case 'clientImage':
+        return <ClientAdmin />;
       default:
         return <div>Select an option from the sidebar</div>;
     }
@@ -21,9 +25,17 @@ const AdminDashboard = () => {
           <li>
             <button
               onClick={() => setActiveComponent('uploadForm')}
-              className="w-full text-left hover:bg-gray-600 px-4 py-2 rounded-lg"
+              className={`w-full text-left px-4 py-2 rounded-lg ${activeComponent === 'uploadForm' ? 'bg-gray-600' : 'hover:bg-gray-600'}`}
             >
               Upload Wedding Card
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveComponent('clientImage')}
+              className={`w-full text-left px-4 py-2 rounded-lg ${activeComponent === 'clientImage' ? 'bg-gray-600' : 'hover:bg-gray-600'}`}
+            >
+              Client Image
             </button>
           </li>
           {/* Add more navigation items here if needed */}

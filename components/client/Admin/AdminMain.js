@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const AdminUploadForm = () => {
+const AdminMain = () => {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.size > 2 * 1024 * 1024) { 
+    if (file && file.size > 10 * 1024 * 1024) { 
       alert('File size should be less than 2MB');
       return;
     }
@@ -86,4 +86,4 @@ const AdminUploadForm = () => {
   );
 };
 
-export default AdminUploadForm;
+export default AdminMain;

@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="w-full h-full flex flex-row items-center justify-between m-auto px-[10px]">
         <a href="/" className="h-auto w-auto flex flex-row items-center">
           <Image
-            src="" // Add your logo src here
+            src="" 
             alt="logo"
             width={70}
             height={70}
@@ -20,9 +20,18 @@ const Navbar = () => {
         </a>
 
         <div className="flex flex-row gap-5 mr-10">
-          <span className="text-black">
+          <span className="text-black flex flex-row gap-5">
             <a href="/blog" className="cursor-pointer">
               Blogs
+            </a>
+            <a href="/client" className="cursor-pointer">
+              Client Gallery
+            </a>
+            <a href="/Admin" className="cursor-pointer">
+              Admin
+            </a>
+            <a href="/Auth" className="cursor-pointer">
+              SignIn
             </a>
           </span>
           {Socials.map((social) => (
