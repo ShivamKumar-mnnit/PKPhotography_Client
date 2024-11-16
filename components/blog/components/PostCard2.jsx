@@ -15,7 +15,7 @@ export default function PostCard2({ post }) {
   const [customMessage, setCustomMessage] = useState("");
 
   // Construct the URL for sharing
-  const currentArticleUrl = encodeURIComponent(window.location.origin + `/post/${post.slug}`);
+  const currentArticleUrl = encodeURIComponent(window.location.origin + `/blogpost/${post.slug}`);
   const encodedMessage = encodeURIComponent(customMessage ? `${customMessage} ` : '');
 
   return (
@@ -28,7 +28,7 @@ export default function PostCard2({ post }) {
         </p>
 
         {/* Post Image (Small Square) */}
-        <Link href={`/post/${post.slug}`} passHref>
+        <Link href={`/blogpost/${post.slug}`} passHref>
           <img
             src={post.image}
             alt='post cover'
@@ -37,20 +37,7 @@ export default function PostCard2({ post }) {
         </Link>
 
         {/* Share and Comment Icons */}
-        <div className='flex items-center justify-between mt-2'>
-          <Link href={`/post/${post.slug}#comments`}>
-            <FontAwesomeIcon icon={faCommentAlt} className='cursor-pointer' />
-          </Link>
-          <FontAwesomeIcon
-            icon={faShareAlt}
-            className='cursor-pointer'
-            onClick={() => {
-              // Logic for sharing
-              // You can create a modal or implement a share functionality here
-              console.log("Share options will be shown");
-            }}
-          />
-        </div>
+       
       </div>
     </div>
   );
