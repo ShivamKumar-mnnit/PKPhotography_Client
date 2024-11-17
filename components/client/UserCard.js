@@ -28,33 +28,63 @@ const UserCards = () => {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-4">
-  {cards.map((card) => (
-    <div 
-      key={card._id} 
-      className="shadow-lg p-4 cursor-pointer w-64 h-80 mx-auto flex flex-col items-center"
-    >
-      <div className="w-full h-40 overflow-hidden">
-        <img
-          src={card.imageUrl}
-          alt={card.name}
-          className="object-cover w-full h-full"
+    <>
+      <head>
+        <title>PK Photography</title>
+        <meta
+          name="description"
+          content="Browse through the user cards showcasing beautiful moments captured by PK Photography. Explore details, dates, and images with a user-friendly interface."
         />
-      </div>
-      <h2 className="text-lg font-bold text-center mt-3">{card.name}</h2>
-      <p className="text-center text-sm">{new Date(card.date).toLocaleDateString()}</p>
-      <Link href={`/client/${card._id}`}>
-        <button 
-          className="text-blue-500 mt-auto"
-          onClick={() => handleClick(card._id)}
-        >
-          View Details
-        </button>
-      </Link>
-    </div>
-  ))}
-</div>
+        <meta name="keywords" content="PK Photography, User Cards, Photos, Events, Gallery" />
+        <meta name="author" content="PK Photography" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="User Cards - PK Photography" />
+        <meta
+          property="og:description"
+          content="Browse through the user cards showcasing beautiful moments captured by PK Photography."
+        />
+        <meta property="og:image" content="/default-image.png" />
+        <meta property="og:url" content="http://localhost:3000/user-cards" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="robots" content="index, follow" />
+      </head>
 
+      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+        {cards.map((card) => (
+          <article
+            key={card._id}
+            className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+          >
+            <div className="relative h-48 w-full">
+              <img
+                src={card.imageUrl}
+                alt={`Image of ${card.name}`}
+                className="object-cover w-full h-full rounded-t-lg"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-4 flex flex-col h-full">
+              <h2 className="text-lg font-semibold text-gray-800 text-center">
+                {card.name}
+              </h2>
+              <p className="text-sm text-gray-600 text-center mt-2">
+                {new Date(card.date).toLocaleDateString()}
+              </p>
+              <div className="mt-4 text-center">
+                <Link href={`/client/${card._id}`}>
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-200"
+                    onClick={() => handleClick(card._id)}
+                  >
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </article>
+        ))}
+      </main>
+    </>
   );
 };
 

@@ -9,14 +9,39 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <Head>
-        <title>PK Photography</title>
-        <meta name="description" content="Client Portal for PK Photography" />
+        
+        <title>PK Photography | Client Portal</title>
+        <meta
+          name="description"
+          content="Welcome to the client portal for PK Photography. View, download, and share your photos or order prints. Contact us for access!"
+        />
+        <meta name="keywords" content="PK Photography, Client Portal, Photos, Prints, Share Photos, Order Prints" />
+        <meta name="author" content="PK Photography" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        
+        <meta property="og:title" content="PK Photography | Client Portal" />
+        <meta
+          property="og:description"
+          content="Explore your photos, share them, and order prints through the PK Photography client portal. Contact us for your password!"
+        />
+        <meta property="og:image" content="/path-to-default-image.jpg" />
+        <meta property="og:url" content="https://pkphotography.com" />
+        <meta property="og:type" content="website" />
+
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="PK Photography | Client Portal" />
+        <meta
+          name="twitter:description"
+          content="Discover and share your photos with PK Photography. View your gallery, download, or order prints now!"
+        />
+        <meta name="twitter:image" content="/path-to-default-image.jpg" />
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center flex-1 w-full px-4 text-center mt-20"> 
- 
-        
         <div className="flex space-x-4 mt-4">
           <Link href="https://facebook.com" target="_blank" rel="noreferrer">
             <FaFacebook alt="Facebook" className="w-6 h-6" />

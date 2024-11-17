@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import Head from "next/head";
 
 export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -72,33 +73,78 @@ export default function Login() {
 
   return (
     <GoogleOAuthProvider clientId="475816624295-iqvumfal9cn66aoch50na62lp2tjsmfp.apps.googleusercontent.com">
+      {/* Metadata for SEO */}
+      <Head>
+        <title>Login - Secure OTP & Google Authentication</title>
+        <meta
+          name="description"
+          content="Login securely using OTP authentication or Google Login. Simple, fast, and reliable authentication process."
+        />
+        <meta
+          name="keywords"
+          content="Login, OTP Login, Google Authentication, Secure Login, Fast Login"
+        />
+        <meta name="author" content="Mohit Kumar" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Login - Secure OTP & Google Authentication" />
+        <meta
+          property="og:description"
+          content="Login securely using OTP authentication or Google Login. Simple, fast, and reliable authentication process."
+        />
+        <meta property="og:image" content="/images/login-thumbnail.png" />
+        <meta property="og:url" content="http://localhost:3000/login" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="UTF-8" />
+      </Head>
+
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-          <h2 className="text-2xl font-bold mb-6 text-center">
+          <h1 className="text-2xl font-bold mb-6 text-center">
             Login with OTP or Google
-          </h2>
+          </h1>
 
           {!isLoggedIn ? (
             <>
+              <label
+                htmlFor="phoneNumber"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Mobile Number
+              </label>
               <input
                 type="text"
+                id="phoneNumber"
+                name="phoneNumber"
                 placeholder="Enter Mobile Number"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 className="w-full p-2 mb-4 border rounded"
+                aria-label="Enter your mobile number for OTP login"
               />
               {otpSent && (
-                <input
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="w-full p-2 mb-4 border rounded"
-                />
+                <>
+                  <label
+                    htmlFor="otp"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    OTP
+                  </label>
+                  <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="w-full p-2 mb-4 border rounded"
+                    aria-label="Enter the OTP sent to your mobile number"
+                  />
+                </>
               )}
               <button
                 onClick={otpSent ? handleVerifyOtp : handleSendOtp}
                 className="w-full bg-red-500 text-white p-2 rounded mt-4"
+                aria-label={otpSent ? "Verify the OTP" : "Send OTP to your mobile number"}
               >
                 {otpSent ? "Verify OTP" : "Send OTP"}
               </button>
@@ -109,12 +155,14 @@ export default function Login() {
                 onSuccess={handleGoogleLoginSuccess}
                 onError={() => console.error("Google Login Failed")}
                 className="w-full"
+                text="signin_with"
               />
             </>
           ) : (
             <button
               onClick={handleLogout}
               className="w-full bg-gray-700 text-white p-2 rounded mt-4"
+              aria-label="Logout from the application"
             >
               Logout
             </button>

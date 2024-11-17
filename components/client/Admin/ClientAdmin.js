@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const ClientAdmin = () => {
-  const [clients, setClients] = useState([]);
-  const [name, setName] = useState("");
-  const [clientId, setClientId] = useState("");
-  const [categoryName, setCategoryName] = useState("");
-  const [driveLink, setDriveLink] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [clients, setClients] = useState([]); // List of clients
+  const [selectedClientId, setSelectedClientId] = useState(""); // Selected client's ID
+  const [categoryName, setCategoryName] = useState(""); // New category name
+  const [imageLink, setImageLink] = useState(""); // New category image link
 
+  // Fetch client data on component mount
   useEffect(() => {
     const fetchClients = async () => {
       try {
@@ -18,135 +17,156 @@ const ClientAdmin = () => {
         console.error("Error fetching clients:", error);
       }
     };
-
     fetchClients();
   }, []);
 
-  const handleAddCategory = () => {
-    if (!categoryName || !driveLink) {
-      alert("Please provide both category name and Google Drive link.");
-      return;
-    }
-
-    const newCategory = { categoryName, driveLink };
-    setCategories([...categories, newCategory]);
-    setCategoryName("");
-    setDriveLink("");
-  };
-
-  const handleClientSelection = (e) => {
-    const selectedClient = clients.find((client) => client._id === e.target.value);
-    setClientId(selectedClient?._id || "");
-    setName(selectedClient?.name || "");
-  };
-
-  const handleSubmit = async (e, id, category) => {
+  // Handle form submission to update the category
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!id || category.length === 0) {
-      alert("Please select a client and add at least one category.");
+    if (!selectedClientId || !categoryName || !imageLink) {
+      alert("Please fill out all fields.");
       return;
     }
 
+    const newCategory = {
+      name: categoryName,
+      images: imageLink,
+    };
+
     try {
-      const formattedCategories = category.map((cat) => ({
-        categoryName: cat.categoryName,
-        driveLink: cat.driveLink,
-      }));
+      const response = await axios.put(
+        "http://localhost:4000/api/cards/update-category",
+        {
+          id: selectedClientId,
+          category: newCategory,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert("Category updated successfully!");
+      console.log("Updated Card:", response.data);
 
-      const response = await axios.put("http://localhost:4000/api/update-category", {
-        id,
-        category: formattedCategories,
-      });
-
-      if (response.status === 200) {
-        console.log("Category updated successfully:", response.data);
-        setClientId("");
-        setName("");
-        setCategories([]);
-        alert("Card updated successfully!");
-      } else {
-        console.error("Failed to update category:", response.data.message);
-      }
+      // Clear form fields
+      setCategoryName("");
+      setImageLink("");
+      setSelectedClientId("");
     } catch (error) {
-      console.error("Error updating category:", error);
-      alert("Failed to update the card. Please try again.");
+      console.error(
+        "Error updating category:",
+        error?.response?.data || error.message
+      );
+      alert("Failed to update category. Please try again.");
     }
   };
+
+  // Handle category deletion
+  const handleDelete = async () => {
+    if (!selectedClientId || !categoryName) {
+      alert("Please select a client and enter the category name to delete.");
+      return;
+    }
+  
+    try {
+      const response = await axios.delete(
+        "http://localhost:4000/api/cards/delete-category",
+        {
+          data: {
+            id: selectedClientId,
+            categoryName: categoryName,
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      alert("Category deleted successfully!");
+      console.log("Deleted Category:", response.data);
+  
+      // Clear form fields
+      setCategoryName("");
+      setSelectedClientId("");
+    } catch (error) {
+      console.error(
+        "Error deleting category:",
+        error?.response?.data || error.message
+      );
+      alert("Failed to delete category. Please try again.");
+    }
+  };
+  
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e, clientId, categories)}
+      onSubmit={handleSubmit}
       className="flex flex-col items-center py-10 space-y-6"
     >
+      <h1 className="text-2xl font-bold text-gray-700">Client Admin</h1>
+
+      {/* Dropdown to select a client */}
       <div className="w-3/4 md:w-1/2">
-        <label className="block text-lg font-semibold text-gray-700 mb-2">Select Client</label>
+        <label className="block text-lg font-semibold text-gray-700 mb-2">
+          Select Client
+        </label>
         <select
-          onChange={handleClientSelection}
+          value={selectedClientId}
+          onChange={(e) => setSelectedClientId(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-600 focus:outline-none focus:border-yellow-600"
         >
-          <option value="">Select Client</option>
+          <option value="">-- Select a Client --</option>
           {clients.map((client) => (
             <option key={client._id} value={client._id}>
-              {client.name}
+              {client.name || "Unnamed Client"}
             </option>
           ))}
         </select>
-        {name && <p className="text-green-600 mt-2">Selected Client: {name}</p>}
       </div>
 
+      {/* Input fields for new category */}
       <div className="w-3/4 md:w-1/2">
-        <label className="block text-lg font-semibold text-gray-700 mb-2">Add Category</label>
+        <label className="block text-lg font-semibold text-gray-700 mb-2">
+          Category Name
+        </label>
         <input
           type="text"
           value={categoryName}
           onChange={(e) => setCategoryName(e.target.value)}
-          placeholder="Category Name"
+          placeholder="Enter Category Name"
           className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-lg shadow-sm text-gray-600 focus:outline-none focus:border-yellow-600"
         />
+
+        <label className="block text-lg font-semibold text-gray-700 mb-2">
+          Drive Link
+        </label>
         <input
           type="text"
-          value={driveLink}
-          onChange={(e) => setDriveLink(e.target.value)}
-          placeholder="Google Drive Link"
+          value={imageLink}
+          onChange={(e) => setImageLink(e.target.value)}
+          placeholder="Drive Link"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-600 focus:outline-none focus:border-yellow-600"
         />
-        <button
-          type="button"
-          onClick={handleAddCategory}
-          className="mt-2 px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700"
-        >
-          Add Category
-        </button>
       </div>
 
-      {categories.length === 0 ? (
-        <p className="text-gray-500">No categories added yet.</p>
-      ) : (
-        <ul className="w-3/4 md:w-1/2 mt-4">
-          {categories.map((category, index) => (
-            <li key={index} className="flex justify-between py-2 px-4 border-b border-gray-200">
-              <span>{category.categoryName}</span>
-              <a
-                href={category.driveLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                View
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <button
-        type="submit"
-        className="px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700"
-        disabled={!clientId || categories.length === 0}
-      >
-        Save Card
-      </button>
+      {/* Submit and Delete buttons */}
+      <div className="space-x-4">
+        <button
+          type="submit"
+          className="px-6 py-3 bg-yellow-600 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700"
+        >
+          Update Category
+        </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700"
+        >
+          Delete Category
+        </button>
+      </div>
     </form>
   );
 };
